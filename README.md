@@ -86,10 +86,6 @@ A full-stack web application that allows users to upload and download images usi
 - **Method**: `GET`
 - **Response**: Array of image metadata with presigned URLs
 
-### Get Single Image
-- **URL**: `/api/images/:filename`
-- **Method**: `GET`
-- **Response**: Redirects to presigned S3 URL
 
 ## AWS S3 Configuration
 

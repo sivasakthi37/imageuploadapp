@@ -87,28 +87,6 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-app.get('/api/images/:filename', async (req, res) => {
-  try {
-    const image = await Image.findOne({ filename: req.params.filename });
-    
-    if (!image) {
-      return res.status(404).json({ message: 'File not found' });
-    }
-
-    // Generate presigned URL with ResponseContentDisposition
-    const command = new GetObjectCommand({
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: image.s3Key,
-      ResponseContentDisposition: `attachment; filename="${image.originalname}"`
-    });
-
-    const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
-    res.redirect(url);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving file', error: error.message });
-  }
-});
-
 app.get('/api/download/:filename', async (req, res) => {
   try {
     const image = await Image.findOne({ filename: req.params.filename });
